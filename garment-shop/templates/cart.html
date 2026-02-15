@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Your Cart — Thread & Weave{% endblock %}
+{% block main %}
+<div class="cart-page" style="max-width:900px;margin:0 auto;padding:2rem 1.5rem;">
+  <h1 class="section-title" style="text-align:left;margin-bottom:1.5rem;">Your Cart</h1>
+  {% if cart %}
+  <div class="cart-items" style="margin-bottom:2rem;">
+    {% for item in cart %}
+    <div class="cart-item" style="display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--color-sand);align-items:flex-start;">
+      <div class="cart-item-image {{ image_classes.get(item.image, '') }}" style="width:72px;height:96px;border-radius:var(--radius);flex-shrink:0;background:var(--color-sand);"></div>
+      <div class="cart-item-details" style="flex:1;">
+        <h4 style="font-size:0.95rem;margin-bottom:0.25rem;">{{ item.name }}</h4>
+        <p style="font-size:0.85rem;color:var(--color-muted);">{{ item.size }} / {{ item.color }} &times; {{ item.quantity }}</p>
+        <p style="font-weight:500;">${{ "%.2f"|format(item.price * item.quantity) }}</p>
+        <form action="{{ url_for('update_cart') }}" method="post" style="display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem;">
+          <input type="hidden" name="index" value="{{ loop.index0 }}">
+          <button type="submit" name="action" value="minus" class="qty-btn" style="width:28px;height:28px;border:1px solid var(--color-sand);border-radius:var(--radius);background:#fff;cursor:pointer;">&minus;</button>
+          <span>{{ item.quantity }}</span>
+          <button type="submit" name="action" value="plus" class="qty-btn" style="width:28px;height:28px;border:1px solid var(--color-sand);border-radius:var(--radius);background:#fff;cursor:pointer;">+</button>
+          <button type="submit" name="action" value="remove" style="margin-left:0.5rem;padding:0.25rem 0.5rem;font-size:0.85rem;color:var(--color-muted);background:none;border:none;cursor:pointer;text-decoration:underline;">Remove</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div style="padding:1rem 0;border-top:1px solid var(--color-sand);">
+    <p style="font-size:1.1rem;margin-bottom:1rem;">Subtotal: <strong>${{ "%.2f"|format(total) }}</strong></p>
+    <a href="{{ url_for('checkout') }}" class="btn btn-primary">Proceed to Checkout</a>
+  </div>
+  {% else %}
+  <p class="cart-empty" style="padding:2rem;text-align:center;color:var(--color-muted);">Your cart is empty.</p>
+  <a href="{{ url_for('index') }}#shop" class="btn btn-primary">Continue Shopping</a>
+  {% endif %}
+</div>
+{% endblock %}

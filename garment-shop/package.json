@@ -1,10 +1,10 @@
 {
-  "name": "garment-shop",
+  "name": "garment-shop-python",
   "version": "1.0.0",
-  "description": "Thread & Weave — Dress shop (vanilla HTML/CSS/JS)",
+  "description": "Thread & Weave — Dress shop (Flask, Python only)",
   "private": true,
   "scripts": {
-    "start": "node server.js 3000",
-    "dev": "node server.js 3000"
+    "start": "venv/bin/python3 app.py",
+    "dev": "venv/bin/python3 app.py"
   }
 }

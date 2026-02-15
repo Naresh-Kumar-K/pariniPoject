@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Thread & Weave{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="{{ url_for('index') }}" class="logo">Thread & Weave</a>
+      <nav class="nav">
+        <a href="{{ url_for('index') }}#home">Home</a>
+        <a href="{{ url_for('index') }}#shop">Shop</a>
+        <a href="{{ url_for('index') }}#categories">Categories</a>
+        <a href="{{ url_for('index') }}#about">About</a>
+        <a href="{{ url_for('index') }}#contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <form class="header-search-form" action="{{ url_for('index') }}" method="get" style="display:flex;align-items:center;gap:0.5rem;">
+          <input type="search" name="search" placeholder="Search..." value="{{ request.args.get('search', '') }}" style="padding:0.4rem 0.6rem;font-size:0.9rem;border:1px solid var(--color-sand);border-radius:var(--radius);min-width:120px;">
+          <button type="submit" class="icon-btn" aria-label="Search">&#128269;</button>
+        </form>
+        <a href="{{ url_for('cart_page') }}" class="icon-btn" aria-label="Cart" style="position:relative;text-decoration:none;color:inherit;">
+          &#128722;
+          <span class="cart-count {% if cart_count and cart_count > 0 %}has-items{% endif %}">{{ cart_count or 0 }}</span>
+        </a>
+        <a href="{{ url_for('login') }}" class="icon-btn" aria-label="Account" style="text-decoration:none;color:inherit;">Account</a>
+      </div>
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+      {% for category, msg in messages %}
+      <p class="flash {{ category or 'info' }}">{{ msg }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+  {% endwith %}
+
+  <main>
+    {% block main %}{% endblock %}
+  </main>
+
+  <footer class="footer" id="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <p class="footer-logo">Thread & Weave</p>
+        <p class="footer-tagline">Dress shopping, simplified.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <a href="{{ url_for('index') }}?category=dresses">Dresses</a>
+          <a href="{{ url_for('index') }}?category=tops">Tops</a>
+          <a href="{{ url_for('index') }}?category=bottoms">Bottoms</a>
+          <a href="{{ url_for('index') }}?category=accessories">Accessories</a>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="#">Shipping Info</a>
+          <a href="#">Returns</a>
+          <a href="#">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="{{ url_for('index') }}#about">About</a>
+          <a href="{{ url_for('index') }}#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2025 Thread & Weave. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

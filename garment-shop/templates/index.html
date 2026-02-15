@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}Thread & Weave — Dress Shopping{% endblock %}
+{% block main %}
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <p class="hero-tag">Spring 2025</p>
+      <h1 class="hero-title">Crafted for<br>Every Moment</h1>
+      <p class="hero-desc">Curated dresses and garments from natural fabrics. Timeless cuts, lasting comfort.</p>
+      <a href="#shop" class="btn btn-primary">Shop Dresses</a>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card hero-card-1"><span class="card-label">New Arrivals</span></div>
+      <div class="hero-card hero-card-2"><span class="card-label">Dresses & More</span></div>
+    </div>
+  </section>
+
+  <section id="categories" class="categories">
+    <h2 class="section-title">Shop by Category</h2>
+    <div class="category-grid">
+      <a href="{{ url_for('index', category='dresses') }}" class="category-card">
+        <div class="category-img category-dresses"></div>
+        <span class="category-name">Dresses</span>
+      </a>
+      <a href="{{ url_for('index', category='tops') }}" class="category-card">
+        <div class="category-img category-tops"></div>
+        <span class="category-name">Tops</span>
+      </a>
+      <a href="{{ url_for('index', category='bottoms') }}" class="category-card">
+        <div class="category-img category-bottoms"></div>
+        <span class="category-name">Bottoms</span>
+      </a>
+      <a href="{{ url_for('index', category='accessories') }}" class="category-card">
+        <div class="category-img category-accessories"></div>
+        <span class="category-name">Accessories</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="collection">
+    <h2 class="section-title">Featured Pieces</h2>
+    <div class="product-grid">
+      {% for p in featured %}
+      <article class="product-card">
+        <a href="{{ url_for('product_detail', pid=p.id) }}" class="product-image {{ image_classes.get(p.image, '') }}" style="display:block;text-decoration:none;color:inherit;"></a>
+        <div class="product-info">
+          <span class="product-category">{{ p.category }}</span>
+          <h3 class="product-name"><a href="{{ url_for('product_detail', pid=p.id) }}" style="color:inherit;text-decoration:none;">{{ p.name }}</a></h3>
+          <p class="product-price">${{ "%.2f"|format(p.price) }}</p>
+          <a href="{{ url_for('product_detail', pid=p.id) }}" class="btn btn-primary btn-add-cart">View & Add to Cart</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="section-cta"><a href="#shop" class="btn btn-outline">View All Products</a></p>
+  </section>
+
+  <section id="shop" class="shop-section">
+    <h2 class="section-title">Shop All</h2>
+    <form class="shop-filters" action="{{ url_for('index') }}" method="get">
+      <input type="hidden" name="search" value="{{ current_search }}">
+      <div class="filter-group">
+        <label>Category</label>
+        <select name="category">
+          {% for c in categories %}
+          <option value="{{ c.id }}" {% if c.id == current_category %}selected{% endif %}>{{ c.label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Min price</label>
+        <input type="number" name="minPrice" placeholder="$0" min="0" step="10" value="{{ current_min_price }}">
+      </div>
+      <div class="filter-group">
+        <label>Max price</label>
+        <input type="number" name="maxPrice" placeholder="$300" min="0" step="10" value="{{ current_max_price }}">
+      </div>
+      <div class="filter-group" style="align-self:flex-end;">
+        <button type="submit" class="btn btn-primary">Apply</button>
+      </div>
+    </form>
+    <div class="product-grid">
+      {% if products %}
+      {% for p in products %}
+      <article class="product-card">
+        <a href="{{ url_for('product_detail', pid=p.id) }}" class="product-image {{ image_classes.get(p.image, '') }}" style="display:block;text-decoration:none;color:inherit;"></a>
+        <div class="product-info">
+          <span class="product-category">{{ p.category }}</span>
+          <h3 class="product-name"><a href="{{ url_for('product_detail', pid=p.id) }}" style="color:inherit;text-decoration:none;">{{ p.name }}</a></h3>
+          <p class="product-price">${{ "%.2f"|format(p.price) }}</p>
+          <a href="{{ url_for('product_detail', pid=p.id) }}" class="btn btn-primary btn-add-cart">View & Add to Cart</a>
+        </div>
+      </article>
+      {% endfor %}
+      {% else %}
+      <p class="no-results" style="grid-column:1/-1;">No products match your filters. Try adjusting or clearing filters.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="about-content">
+      <h2 class="section-title">Our Philosophy</h2>
+      <p class="about-text">We believe in clothes that age with you. Every piece is chosen for its fabric, fit, and longevity—so you can wear less and mean more.</p>
+      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="contact-inner">
+      <h2 class="section-title">Stay in the Loop</h2>
+      <p class="contact-desc">Subscribe for new drops, restocks, and a little inspiration.</p>
+      <form class="newsletter-form" action="{{ url_for('newsletter') }}" method="post">
+        <input type="email" name="email" placeholder="Your email" required>
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+      <div class="contact-links">
+        <a href="#">Instagram</a>
+        <a href="#">Store Locator</a>
+        <a href="#footer">Shipping & Returns</a>
+        <a href="#footer">FAQ</a>
+      </div>
+    </div>
+  </section>
+{% endblock %}

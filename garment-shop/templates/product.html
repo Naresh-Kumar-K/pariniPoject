@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} — Thread & Weave{% endblock %}
+{% block main %}
+<div class="product-detail-page" style="max-width:1200px;margin:0 auto;padding:2rem 1.5rem;">
+  <p style="margin-bottom:1rem;"><a href="{{ url_for('index') }}#shop" style="color:var(--color-muted);">&larr; Back to Shop</a></p>
+  <div class="product-detail-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;">
+    <div class="product-detail-image {{ image_class }}" style="aspect-ratio:3/4;border-radius:var(--radius);background:var(--color-sand);"></div>
+    <div class="product-detail-info">
+      <span class="product-category">{{ product.category }}</span>
+      <h1 class="product-detail-name" style="font-family:var(--font-display);font-size:1.5rem;font-weight:600;margin-bottom:0.5rem;">{{ product.name }}</h1>
+      <p class="product-detail-price" style="font-size:1.25rem;font-weight:600;margin-bottom:1rem;">${{ "%.2f"|format(product.price) }}</p>
+      <p class="product-detail-desc" style="font-size:0.9rem;color:var(--color-muted);margin-bottom:1.5rem;">Premium fabric, timeless fit. Free shipping on orders over $100.</p>
+
+      <form action="{{ url_for('add_to_cart') }}" method="post" style="margin-bottom:1rem;">
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        <input type="hidden" name="next" value="{{ url_for('product_detail', pid=product.id) }}">
+        <div class="product-options" style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;">
+          <label style="font-size:0.8rem;font-weight:500;text-transform:uppercase;color:var(--color-muted);">Size</label>
+          <select name="size" style="padding:0.5rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
+            {% for s in product.sizes %}
+            <option value="{{ s }}">{{ s }}</option>
+            {% endfor %}
+          </select>
+          <label style="font-size:0.8rem;font-weight:500;text-transform:uppercase;color:var(--color-muted);">Color</label>
+          <select name="color" style="padding:0.5rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
+            {% for c in product.colors %}
+            <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+          </select>
+          <label style="font-size:0.8rem;font-weight:500;text-transform:uppercase;color:var(--color-muted);">Quantity</label>
+          <input type="number" name="quantity" min="1" value="1" style="padding:0.5rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);width:80px;">
+        </div>
+        <button type="submit" class="btn btn-primary">Add to Cart</button>
+      </form>
+
+      <form action="{{ url_for('wishlist_toggle') }}" method="post" style="display:inline-block;">
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        <input type="hidden" name="next" value="{{ url_for('product_detail', pid=product.id) }}">
+        <button type="submit" class="btn btn-outline" style="background:var(--color-sand);border:none;">{{ '♥ Remove from Wishlist' if in_wishlist else '♥ Add to Wishlist' }}</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
