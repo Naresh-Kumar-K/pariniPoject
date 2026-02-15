@@ -1,0 +1,10 @@
+{
+  "name": "garment-shop",
+  "version": "1.0.0",
+  "description": "Thread & Weave — Dress shop (vanilla HTML/CSS/JS)",
+  "private": true,
+  "scripts": {
+    "start": "node server.js 3000",
+    "dev": "node server.js 3000"
+  }
+}
