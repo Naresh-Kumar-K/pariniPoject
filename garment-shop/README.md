@@ -1,49 +1,46 @@
-# Parini — Clothing Shop (Python/Flask, no JavaScript)
+# Parini Clothing Shop
 
-Python-only clothing shop. All behavior is server-side: **no .js files**. Flask handles routing, session cart/wishlist, filters, search, and checkout via forms and full-page requests.
+This is a small Flask project made for college practice.
+It is a clothing shop website with cart and checkout flow.
 
-## Setup
+## Tech used
 
-1. Create a virtual environment (recommended):
+- Python
+- Flask
+- HTML + CSS
 
+## How to run
+
+1. (Optional) create venv
    ```bash
    python3 -m venv venv
-   source venv/bin/activate   # On Windows: venv\Scripts\activate
+   source venv/bin/activate
    ```
 
-2. Install dependencies:
-
+2. Install requirements
    ```bash
    pip install -r requirements.txt
    ```
-   (On some systems use `pip3`.)
 
-## Run
+3. Start app
+   ```bash
+   python app.py
+   ```
 
-```bash
-python app.py
-```
-(Or `python3 app.py`.)
+Then open `http://localhost:3000`
 
-Then open **http://localhost:3000** in your browser.
+## Features I added
 
-To use a different port:
+- Signup flow (session based)
+- Product listing with categories
+- Search and price filter
+- Product details page
+- Add to cart / update cart
+- Wishlist toggle
+- Checkout form
 
-```bash
-PORT=5000 python app.py
-```
+## Notes
 
-## Project structure
-
-- **`app.py`** — Flask app: product/category data, session cart and wishlist, all routes (index, product detail, add to cart, cart page, update/remove cart, wishlist toggle, checkout, newsletter, login).
-- **`templates/`** — Jinja2 templates only (no script tags): `base.html`, `index.html`, `product.html`, `cart.html`, `checkout.html`, `login.html`.
-- **`static/styles.css`** — Styles. No JavaScript in the project.
-
-## Features
-
-- **Shop**: Filter by category, min/max price, and search (GET form in header and filters on shop section).
-- **Product page**: Size, color, quantity; Add to Cart and Add/Remove Wishlist (POST forms).
-- **Cart page**: List items, change quantity or remove (POST); link to Checkout.
-- **Checkout**: Shipping form (POST); order confirmation and cart cleared.
-- **Account**: Login page (display-only message).
-- Cart and wishlist are stored in the **session** (server-side).
+- No database used, product data is in `app.py`
+- Cart/wishlist stored in Flask session
+- This is a mini project, not production ready

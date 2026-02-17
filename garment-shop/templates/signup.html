@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Sign Up — Parini{% endblock %}
+{% block title %}Sign Up - Parini{% endblock %}
 {% block main %}
 <div style="max-width:500px;margin:3rem auto;padding:2rem;">
-  <h2 style="font-family:var(--font-display);font-size:2rem;margin-bottom:0.5rem;text-align:center;">Welcome to Parini</h2>
-  <p style="text-align:center;color:var(--color-muted);margin-bottom:2rem;">Create your account to start shopping</p>
+  <h2 style="font-family:var(--font-display);font-size:2rem;margin-bottom:0.5rem;text-align:center;">Create Account</h2>
+  <p style="text-align:center;color:var(--color-muted);margin-bottom:2rem;">Fill this form to continue to the project site</p>
   <form action="{{ url_for('signup') }}" method="post" class="signup-form" style="display:flex;flex-direction:column;gap:1.25rem;">
     <div>
-      <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);display:block;margin-bottom:0.5rem;">Full Name *</label>
+      <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);display:block;margin-bottom:0.5rem;">Name *</label>
       <input type="text" name="name" placeholder="John Doe" required style="width:100%;padding:0.75rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);font-family:var(--font-body);">
     </div>
     <div>
@@ -18,7 +18,7 @@
       <input type="password" name="password" placeholder="••••••••" required minlength="6" style="width:100%;padding:0.75rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);font-family:var(--font-body);">
     </div>
     <div>
-      <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);display:block;margin-bottom:0.5rem;">Phone Number</label>
+      <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);display:block;margin-bottom:0.5rem;">Phone</label>
       <input type="tel" name="phone" placeholder="+91 98765 43210" style="width:100%;padding:0.75rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);font-family:var(--font-body);">
     </div>
     <div>
@@ -35,7 +35,7 @@
         <input type="text" name="zip_code" placeholder="601301" style="width:100%;padding:0.75rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);font-family:var(--font-body);">
       </div>
     </div>
-    <button type="submit" class="btn btn-primary" style="width:100%;padding:0.875rem;font-size:1rem;margin-top:0.5rem;">Create Account</button>
+    <button type="submit" class="btn btn-primary" style="width:100%;padding:0.875rem;font-size:1rem;margin-top:0.5rem;">Submit</button>
   </form>
   <!-- <p style="margin-top:1.5rem;font-size:0.9rem;color:var(--color-muted);text-align:center;">Already have an account? <a href="{{ url_for('login') }}" style="color:var(--color-charcoal);font-weight:500;">Sign in</a></p> -->
 </div>

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Parini — Clothing Shop{% endblock %}
+{% block title %}Parini - Clothing Shop{% endblock %}
 {% block main %}
   {% if show_search_modal %}
   <div class="search-modal-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:rgba(26,24,22,0.92);display:flex;align-items:center;justify-content:center;padding:2rem;">
@@ -7,8 +7,8 @@
     <div class="search-modal-content" style="background:var(--color-cream);border-radius:12px;width:100%;max-width:1000px;max-height:90vh;overflow-y:auto;position:relative;z-index:2;box-shadow:0 8px 32px rgba(0,0,0,0.3);">
       <div style="position:sticky;top:0;background:var(--color-cream);padding:1.5rem 2rem;border-bottom:2px solid var(--color-sand);display:flex;justify-content:space-between;align-items:center;z-index:10;">
         <div>
-          <h2 style="font-family:var(--font-display);font-size:1.75rem;margin:0;color:var(--color-charcoal);">Search Results</h2>
-          <p style="color:var(--color-muted);margin:0.5rem 0 0 0;font-size:0.95rem;">Found {{ search_results|length }} result{{ 's' if search_results|length != 1 else '' }} for "<strong>{{ current_search }}</strong>"</p>
+          <h2 style="font-family:var(--font-display);font-size:1.75rem;margin:0;color:var(--color-charcoal);">Search results</h2>
+          <p style="color:var(--color-muted);margin:0.5rem 0 0 0;font-size:0.95rem;">Found {{ search_results|length }} item{{ 's' if search_results|length != 1 else '' }} for "<strong>{{ current_search }}</strong>"</p>
         </div>
         <a href="{{ url_for('index') }}" style="width:36px;height:36px;border-radius:50%;background:var(--color-sand);display:flex;align-items:center;justify-content:center;color:var(--color-charcoal);font-size:1.5rem;text-decoration:none;cursor:pointer;transition:background 0.2s;position:relative;z-index:11;" onmouseover="this.style.background='var(--color-terracotta)';this.style.color='white'" onmouseout="this.style.background='var(--color-sand)';this.style.color='var(--color-charcoal)'">&times;</a>
       </div>
@@ -42,10 +42,10 @@
   {% endif %}
   <section id="home" class="hero">
     <div class="hero-content">
-      <p class="hero-tag">Spring 2025</p>
-      <h1 class="hero-title">Crafted for<br>Every Moment</h1>
-      <p class="hero-desc">Curated clothing for every occasion. Dresses, tops, bottoms, and accessories—style that fits your life.</p>
-      <a href="#shop" class="btn btn-primary">Shop Clothing</a>
+      <p class="hero-tag">2025 Collection</p>
+      <h1 class="hero-title">Simple Styles<br>For Daily Wear</h1>
+      <p class="hero-desc">This project shows a basic clothing store flow with categories, cart, and checkout pages.</p>
+      <a href="#shop" class="btn btn-primary">Shop Now</a>
     </div>
     <div class="hero-visual" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:100%;">
       {% for dress in random_dresses %}
@@ -88,7 +88,7 @@
   </section>
 
   <section class="collection">
-    <h2 class="section-title">Featured Clothing</h2>
+    <h2 class="section-title">Featured Products</h2>
     <div class="product-grid">
       {% for p in featured %}
       <article class="product-card">
@@ -99,12 +99,12 @@
           <span class="product-category">{{ p.category }}</span>
           <h3 class="product-name"><a href="{{ url_for('product_detail', pid=p.id) }}" style="color:inherit;text-decoration:none;">{{ p.name }}</a></h3>
           <p class="product-price">₹{{ "{:,}".format(p.price) }}</p>
-          <a href="{{ url_for('product_detail', pid=p.id) }}" class="btn btn-primary btn-add-cart">View & Add to Cart</a>
+          <a href="{{ url_for('product_detail', pid=p.id) }}" class="btn btn-primary btn-add-cart">View Product</a>
         </div>
       </article>
       {% endfor %}
     </div>
-    <p class="section-cta"><a href="#shop" class="btn btn-outline">View All Products</a></p>
+    <p class="section-cta"><a href="#shop" class="btn btn-outline">See All Products</a></p>
   </section>
 
   <section id="shop" class="shop-section">
@@ -142,7 +142,7 @@
           <span class="product-category">{{ p.category }}</span>
           <h3 class="product-name"><a href="{{ url_for('product_detail', pid=p.id) }}" style="color:inherit;text-decoration:none;">{{ p.name }}</a></h3>
           <p class="product-price">₹{{ "{:,}".format(p.price) }}</p>
-          <a href="{{ url_for('product_detail', pid=p.id) }}" class="btn btn-primary btn-add-cart">View & Add to Cart</a>
+          <a href="{{ url_for('product_detail', pid=p.id) }}" class="btn btn-primary btn-add-cart">View Product</a>
         </div>
       </article>
       {% endfor %}
@@ -154,16 +154,16 @@
 
   <section id="about" class="about">
     <div class="about-content">
-      <h2 class="section-title">Our Philosophy</h2>
-      <p class="about-text">We believe in clothing that works for you. Every piece is chosen for style, fit, and versatility—so you can look good and feel confident.</p>
-      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+      <h2 class="section-title">About This Project</h2>
+      <p class="about-text">This is a mini e-commerce project built with Flask to practice routing, forms, and session handling.</p>
+      <a href="#contact" class="btn btn-outline">Contact</a>
     </div>
   </section>
 
   <section id="contact" class="contact">
     <div class="contact-inner">
-      <h2 class="section-title">Stay in the Loop</h2>
-      <p class="contact-desc">Subscribe for new drops, restocks, and a little inspiration.</p>
+      <h2 class="section-title">Project Updates</h2>
+      <p class="contact-desc">Subscribe if you want updates when we improve this mini project.</p>
       <form class="newsletter-form" action="{{ url_for('newsletter') }}" method="post">
         <input type="email" name="email" placeholder="Your email" required>
         <button type="submit" class="btn btn-primary">Subscribe</button>

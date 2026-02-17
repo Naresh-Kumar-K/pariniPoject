@@ -1,12 +1,13 @@
 """
-Parini — Clothing Shop
-Flask-based e-commerce platform for clothing and accessories.
+Parini clothing shop
+Simple Flask mini project (college)
 """
 import os
 import random
 from flask import Flask, render_template, request, redirect, url_for, session, flash, Response, abort
 
 app = Flask(__name__)
+# using env key if available, else default for local testing
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-change-in-production")
 
 PRODUCTS = [
@@ -44,7 +45,7 @@ def get_product(pid):
     return None
 
 
-def get_product_by_image_id(image_id: str):
+def get_product_by_image_id(image_id):
     for p in PRODUCTS:
         if p.get("image") == image_id:
             return p
@@ -90,11 +91,17 @@ def get_cart():
 
 
 def get_cart_total():
-    return sum(item["price"] * item["quantity"] for item in get_cart())
+    total = 0
+    for item in get_cart():
+        total += item["price"] * item["quantity"]
+    return total
 
 
 def get_cart_count():
-    return sum(item["quantity"] for item in get_cart())
+    count = 0
+    for item in get_cart():
+        count += item["quantity"]
+    return count
 
 
 def get_wishlist():
@@ -110,7 +117,7 @@ def inject_cart_count():
     return {"cart_count": get_cart_count()}
 
 
-def _svg_escape(text: str) -> str:
+def _svg_escape(text):
     return (
         (text or "")
         .replace("&", "&amp;")
@@ -121,8 +128,8 @@ def _svg_escape(text: str) -> str:
     )
 
 
-def _accent_from_id(image_id: str) -> str:
-    # Deterministic color from the image id.
+def _accent_from_id(image_id):
+    # generate a repeatable color from image id
     h = 0
     for ch in (image_id or ""):
         h = (h * 31 + ord(ch)) & 0xFFFFFFFF
@@ -130,9 +137,8 @@ def _accent_from_id(image_id: str) -> str:
     return f"hsl({hue} 45% 52%)"
 
 
-def _icon_path_for_category(category: str) -> str:
-    # Simple icon silhouettes (very lightweight, looks good in cards).
-    # Paths are designed for a 400x520 viewBox.
+def _icon_path_for_category(category):
+    # category icons for svg card
     if category == "dresses":
         # Dress silhouette
         return (
@@ -244,7 +250,7 @@ def product_image(image_id):
 
 @app.route("/")
 def index():
-    # Check if user is registered, redirect to signup if not
+    # redirect to signup if user not registered yet
     if not session.get("user_registered"):
         return redirect(url_for("signup"))
     
@@ -252,17 +258,17 @@ def index():
     min_price = request.args.get("minPrice", type=lambda x: int(x) if x else None)
     max_price = request.args.get("maxPrice", type=lambda x: int(x) if x else None)
     search = request.args.get("search", "").strip()
-    show_search_modal = bool(search)  # Show modal if there's a search query
+    show_search_modal = bool(search)
     
-    # For the main page, don't filter by search - show all products
+    # main products section (search shown in modal separately)
     products = get_filtered_products(category, min_price, max_price, "")
     featured = PRODUCTS[:8]
     
-    # Get random dresses for hero section (3 items)
+    # random 3 dresses for hero
     dresses = [p for p in PRODUCTS if p["category"] == "dresses"]
     random_dresses = random.sample(dresses, min(len(dresses), 3))  # Show 3 random dresses
     
-    # Get search results separately for the modal
+    # search results for modal
     search_results = []
     if search:
         search_results = get_filtered_products("all", None, None, search)
@@ -348,7 +354,7 @@ def cart_page():
 @app.route("/cart/update", methods=["POST"])
 def update_cart():
     index = request.form.get("index", type=int)
-    action = request.form.get("action")  # "plus", "minus", "remove"
+    action = request.form.get("action")  # plus / minus / remove
     cart = list(get_cart())
     if 0 <= index < len(cart):
         if action == "remove":
@@ -378,7 +384,7 @@ def wishlist_toggle():
 
 @app.route("/checkout", methods=["GET", "POST"])
 def checkout():
-    # Check if user is registered
+    # allow checkout only for signed up user
     if not session.get("user_registered"):
         flash("Please sign up to proceed with checkout.")
         return redirect(url_for("signup"))
@@ -421,12 +427,12 @@ def signup():
         city = request.form.get("city", "").strip()
         zip_code = request.form.get("zip_code", "").strip()
         
-        # Validate required fields
+        # required fields check
         if not all([name, email, password]):
             flash("Please fill in all required fields (Name, Email, Password).")
             return render_template("signup.html")
         
-        # Store user data in session
+        # store basic user data in session (no database in this mini project)
         session["user_registered"] = True
         session["user_data"] = {
             "name": name,
@@ -445,17 +451,19 @@ def signup():
 
 @app.route("/category/<category_name>")
 def category_page(category_name):
-    # Check if user is registered, redirect to signup if not
+    # allow only signed up users
     if not session.get("user_registered"):
         return redirect(url_for("signup"))
     
-    # Validate category
-    category_map = {c["id"]: c["label"] for c in CATEGORIES}
+    # map category id -> label
+    category_map = {}
+    for c in CATEGORIES:
+        category_map[c["id"]] = c["label"]
     if category_name not in category_map:
         flash("Category not found.")
         return redirect(url_for("index"))
     
-    # Get products for this category
+    # fetch products for selected category
     products = get_filtered_products(category_name, None, None, "")
     category_label = category_map[category_name]
     

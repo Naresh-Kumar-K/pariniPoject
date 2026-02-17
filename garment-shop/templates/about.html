@@ -1,37 +1,37 @@
 {% extends "base.html" %}
-{% block title %}About — Parini{% endblock %}
+{% block title %}About - Parini{% endblock %}
 {% block main %}
 <div style="max-width:800px;margin:0 auto;padding:3rem 1.5rem;">
-  <h1 style="font-family:var(--font-display);font-size:2.5rem;margin-bottom:1rem;">About Parini</h1>
+  <h1 style="font-family:var(--font-display);font-size:2.5rem;margin-bottom:1rem;">About Our Project</h1>
   
   <div style="margin-top:2rem;">
-    <h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--color-charcoal);">Our Story</h2>
+    <h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--color-charcoal);">Project Story</h2>
     <p style="color:var(--color-muted);margin-bottom:1rem;line-height:1.8;">
-      Parini was founded with a simple mission: to offer thoughtfully curated clothing that combines style, quality, and versatility. We believe that great fashion should be accessible, sustainable, and make you feel confident every day.
+      Parini is a sample clothing website made as a college mini project. The idea is to build a simple shopping flow using Flask and templates.
     </p>
     <p style="color:var(--color-muted);margin-bottom:1rem;line-height:1.8;">
-      Our team carefully selects each piece in our collection, focusing on timeless designs, quality materials, and pieces that work for multiple occasions. From everyday essentials to special occasion pieces, we've got you covered.
+      We focused on learning routing, forms, sessions, and template rendering. Product data is static for now but the flow works like a basic e-commerce site.
     </p>
   </div>
 
   <div style="margin-top:2rem;">
-    <h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--color-charcoal);">Our Values</h2>
+    <h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--color-charcoal);">What We Built</h2>
     <div style="background:var(--color-cream);padding:1.5rem;border-radius:var(--radius);margin-bottom:1rem;">
-      <h3 style="font-size:1.2rem;margin-bottom:0.5rem;">Quality First</h3>
-      <p style="color:var(--color-muted);line-height:1.8;">We source only the finest materials and work with trusted manufacturers to ensure every piece meets our high standards.</p>
+      <h3 style="font-size:1.2rem;margin-bottom:0.5rem;">Frontend Pages</h3>
+      <p style="color:var(--color-muted);line-height:1.8;">Created pages for home, categories, product details, cart, checkout, contact, about and FAQ.</p>
     </div>
     <div style="background:var(--color-cream);padding:1.5rem;border-radius:var(--radius);margin-bottom:1rem;">
-      <h3 style="font-size:1.2rem;margin-bottom:0.5rem;">Sustainability</h3>
-      <p style="color:var(--color-muted);line-height:1.8;">We're committed to sustainable practices, from eco-friendly packaging to supporting ethical manufacturing processes.</p>
+      <h3 style="font-size:1.2rem;margin-bottom:0.5rem;">Backend Logic</h3>
+      <p style="color:var(--color-muted);line-height:1.8;">Implemented Flask routes, filtering, cart update actions, wishlist toggle and basic checkout validation.</p>
     </div>
     <div style="background:var(--color-cream);padding:1.5rem;border-radius:var(--radius);margin-bottom:1rem;">
-      <h3 style="font-size:1.2rem;margin-bottom:0.5rem;">Customer Care</h3>
-      <p style="color:var(--color-muted);line-height:1.8;">Your satisfaction is our priority. We're here to help you find the perfect pieces and ensure a seamless shopping experience.</p>
+      <h3 style="font-size:1.2rem;margin-bottom:0.5rem;">Learning Outcome</h3>
+      <p style="color:var(--color-muted);line-height:1.8;">This project helped us understand full request flow between frontend forms and backend Python logic.</p>
     </div>
   </div>
 
   <div style="margin-top:2rem;">
-    <h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--color-charcoal);">Our Location</h2>
+    <h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--color-charcoal);">College Info</h2>
     <div style="background:var(--color-cream);padding:1.5rem;border-radius:var(--radius);margin-bottom:1rem;">
       <p style="color:var(--color-muted);line-height:1.8;margin:0;">
         <strong>Dhanalakshmi College of Engineering (DCE)</strong><br>
@@ -43,9 +43,9 @@
   </div>
 
   <div style="margin-top:2rem;">
-    <h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--color-charcoal);">Contact Us</h2>
+    <h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--color-charcoal);">Contact</h2>
     <p style="color:var(--color-muted);margin-bottom:1rem;line-height:1.8;">
-      Have questions or feedback? We'd love to hear from you! Visit our <a href="{{ url_for('contact_page') }}" style="color:var(--color-charcoal);font-weight:500;">contact page</a> to get in touch.
+      For questions about the project, visit the <a href="{{ url_for('contact_page') }}" style="color:var(--color-charcoal);font-weight:500;">contact page</a>.
     </p>
   </div>
 

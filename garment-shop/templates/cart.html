@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Your Cart — Parini{% endblock %}
+{% block title %}Cart - Parini{% endblock %}
 {% block main %}
 <div class="cart-page" style="max-width:900px;margin:0 auto;padding:2rem 1.5rem;">
-  <h1 class="section-title" style="text-align:left;margin-bottom:1.5rem;">Your Cart</h1>
+  <h1 class="section-title" style="text-align:left;margin-bottom:1.5rem;">Cart</h1>
   {% if cart %}
   <div class="cart-items" style="margin-bottom:2rem;">
     {% for item in cart %}
@@ -25,7 +25,7 @@
   </div>
   <div style="padding:1rem 0;border-top:1px solid var(--color-sand);">
     <p style="font-size:1.1rem;margin-bottom:1rem;">Subtotal: <strong>₹{{ "{:,}".format(total) }}</strong></p>
-    <a href="{{ url_for('checkout') }}" class="btn btn-primary">Proceed to Checkout</a>
+    <a href="{{ url_for('checkout') }}" class="btn btn-primary">Checkout</a>
   </div>
   {% else %}
   <p class="cart-empty" style="padding:2rem;text-align:center;color:var(--color-muted);">Your cart is empty.</p>

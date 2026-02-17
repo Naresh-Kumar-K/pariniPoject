@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ product.name }} — Parini{% endblock %}
+{% block title %}{{ product.name }} - Parini{% endblock %}
 {% block main %}
 <div class="product-detail-page" style="max-width:1200px;margin:0 auto;padding:2rem 1.5rem;">
   <p style="margin-bottom:1rem;"><a href="{{ url_for('index') }}#shop" style="color:var(--color-muted);">&larr; Back to Shop</a></p>
@@ -9,7 +9,7 @@
       <span class="product-category">{{ product.category }}</span>
       <h1 class="product-detail-name" style="font-family:var(--font-display);font-size:1.5rem;font-weight:600;margin-bottom:0.5rem;">{{ product.name }}</h1>
       <p class="product-detail-price" style="font-size:1.25rem;font-weight:600;margin-bottom:1rem;">₹{{ "{:,}".format(product.price) }}</p>
-      <p class="product-detail-desc" style="font-size:0.9rem;color:var(--color-muted);margin-bottom:1.5rem;">Quality clothing, great fit. Free shipping on orders over ₹2,000.</p>
+      <p class="product-detail-desc" style="font-size:0.9rem;color:var(--color-muted);margin-bottom:1.5rem;">Basic product details page for this project demo.</p>
 
       <form action="{{ url_for('add_to_cart') }}" method="post" style="margin-bottom:1rem;">
         <input type="hidden" name="product_id" value="{{ product.id }}">
@@ -36,7 +36,7 @@
       <form action="{{ url_for('wishlist_toggle') }}" method="post" style="display:inline-block;">
         <input type="hidden" name="product_id" value="{{ product.id }}">
         <input type="hidden" name="next" value="{{ url_for('product_detail', pid=product.id) }}">
-        <button type="submit" class="btn btn-outline" style="background:var(--color-sand);border:none;">{{ '♥ Remove from Wishlist' if in_wishlist else '♥ Add to Wishlist' }}</button>
+        <button type="submit" class="btn btn-outline" style="background:var(--color-sand);border:none;">{{ 'Remove Wishlist' if in_wishlist else 'Add Wishlist' }}</button>
       </form>
     </div>
   </div>

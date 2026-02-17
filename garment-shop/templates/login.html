@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Account — Parini{% endblock %}
+{% block title %}Account - Parini{% endblock %}
 {% block main %}
 <div style="max-width:500px;margin:2rem auto;padding:2rem;">
   <h2 style="font-family:var(--font-display);font-size:1.5rem;margin-bottom:1.5rem;">Account</h2>
   
   {% if user_data %}
   <div style="background:var(--color-cream);border:2px solid var(--color-sand);border-radius:var(--radius);padding:1.5rem;margin-bottom:2rem;">
-    <h3 style="font-size:1.1rem;margin-bottom:1rem;color:var(--color-charcoal);">Your Information</h3>
+    <h3 style="font-size:1.1rem;margin-bottom:1rem;color:var(--color-charcoal);">User Info</h3>
     <div style="display:flex;flex-direction:column;gap:0.75rem;font-size:0.95rem;">
       <div><strong>Name:</strong> {{ user_data.name }}</div>
       <div><strong>Email:</strong> {{ user_data.email }}</div>
