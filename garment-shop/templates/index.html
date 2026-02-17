@@ -1,16 +1,16 @@
 {% extends "base.html" %}
-{% block title %}Thread & Weave — Dress Shopping{% endblock %}
+{% block title %}Parini — Clothing Shop{% endblock %}
 {% block main %}
   <section id="home" class="hero">
     <div class="hero-content">
       <p class="hero-tag">Spring 2025</p>
       <h1 class="hero-title">Crafted for<br>Every Moment</h1>
-      <p class="hero-desc">Curated dresses and garments from natural fabrics. Timeless cuts, lasting comfort.</p>
-      <a href="#shop" class="btn btn-primary">Shop Dresses</a>
+      <p class="hero-desc">Curated clothing for every occasion. Dresses, tops, bottoms, and accessories—style that fits your life.</p>
+      <a href="#shop" class="btn btn-primary">Shop Clothing</a>
     </div>
     <div class="hero-visual">
       <div class="hero-card hero-card-1"><span class="card-label">New Arrivals</span></div>
-      <div class="hero-card hero-card-2"><span class="card-label">Dresses & More</span></div>
+      <div class="hero-card hero-card-2"><span class="card-label">Clothing & Accessories</span></div>
     </div>
   </section>
 
@@ -37,11 +37,13 @@
   </section>
 
   <section class="collection">
-    <h2 class="section-title">Featured Pieces</h2>
+    <h2 class="section-title">Featured Clothing</h2>
     <div class="product-grid">
       {% for p in featured %}
       <article class="product-card">
-        <a href="{{ url_for('product_detail', pid=p.id) }}" class="product-image {{ image_classes.get(p.image, '') }}" style="display:block;text-decoration:none;color:inherit;"></a>
+        <a href="{{ url_for('product_detail', pid=p.id) }}" class="product-image-link" style="display:block;text-decoration:none;color:inherit;">
+          <img class="product-image" src="{{ url_for('product_image', image_id=p.image) }}" alt="{{ p.name }}" loading="lazy">
+        </a>
         <div class="product-info">
           <span class="product-category">{{ p.category }}</span>
           <h3 class="product-name"><a href="{{ url_for('product_detail', pid=p.id) }}" style="color:inherit;text-decoration:none;">{{ p.name }}</a></h3>
@@ -82,7 +84,9 @@
       {% if products %}
       {% for p in products %}
       <article class="product-card">
-        <a href="{{ url_for('product_detail', pid=p.id) }}" class="product-image {{ image_classes.get(p.image, '') }}" style="display:block;text-decoration:none;color:inherit;"></a>
+        <a href="{{ url_for('product_detail', pid=p.id) }}" class="product-image-link" style="display:block;text-decoration:none;color:inherit;">
+          <img class="product-image" src="{{ url_for('product_image', image_id=p.image) }}" alt="{{ p.name }}" loading="lazy">
+        </a>
         <div class="product-info">
           <span class="product-category">{{ p.category }}</span>
           <h3 class="product-name"><a href="{{ url_for('product_detail', pid=p.id) }}" style="color:inherit;text-decoration:none;">{{ p.name }}</a></h3>
@@ -100,7 +104,7 @@
   <section id="about" class="about">
     <div class="about-content">
       <h2 class="section-title">Our Philosophy</h2>
-      <p class="about-text">We believe in clothes that age with you. Every piece is chosen for its fabric, fit, and longevity—so you can wear less and mean more.</p>
+      <p class="about-text">We believe in clothing that works for you. Every piece is chosen for style, fit, and versatility—so you can look good and feel confident.</p>
       <a href="#contact" class="btn btn-outline">Get in Touch</a>
     </div>
   </section>

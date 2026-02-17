@@ -1,6 +1,6 @@
-# Thread & Weave — Garment Shop (Python/Flask, no JavaScript)
+# Parini — Clothing Shop (Python/Flask, no JavaScript)
 
-Python-only version of the dress shop. All behavior is server-side: **no .js files**. Flask handles routing, session cart/wishlist, filters, search, and checkout via forms and full-page requests.
+Python-only clothing shop. All behavior is server-side: **no .js files**. Flask handles routing, session cart/wishlist, filters, search, and checkout via forms and full-page requests.
 
 ## Setup
 

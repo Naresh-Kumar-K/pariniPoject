@@ -1,9 +1,9 @@
 """
-Thread & Weave — Dress Shop (Flask, Python only — no JavaScript)
+Parini — Clothing Shop (Flask, Python only — no JavaScript)
 All behavior is server-side: forms, session cart/wishlist, filters, checkout.
 """
 import os
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, Response, abort
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-change-in-production")
@@ -36,17 +36,17 @@ CATEGORIES = [
     {"id": "accessories", "label": "Accessories"},
 ]
 
-IMAGE_CLASSES = {
-    "dress1": "img-dress1", "dress2": "img-dress2", "dress3": "img-dress3", "dress4": "img-dress4",
-    "dress5": "img-dress5", "dress6": "img-dress6", "top1": "img-top1", "top2": "img-top2", "top3": "img-top3",
-    "bottom1": "img-bottom1", "bottom2": "img-bottom2", "bottom3": "img-bottom3",
-    "acc1": "img-acc1", "acc2": "img-acc2", "acc3": "img-acc3", "jumpsuit1": "img-jumpsuit1",
-}
-
 
 def get_product(pid):
     for p in PRODUCTS:
         if p["id"] == pid:
+            return p
+    return None
+
+
+def get_product_by_image_id(image_id: str):
+    for p in PRODUCTS:
+        if p.get("image") == image_id:
             return p
     return None
 
@@ -93,6 +93,138 @@ def inject_cart_count():
     return {"cart_count": get_cart_count()}
 
 
+def _svg_escape(text: str) -> str:
+    return (
+        (text or "")
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+        .replace("'", "&#39;")
+    )
+
+
+def _accent_from_id(image_id: str) -> str:
+    # Deterministic color from the image id.
+    h = 0
+    for ch in (image_id or ""):
+        h = (h * 31 + ord(ch)) & 0xFFFFFFFF
+    hue = h % 360
+    return f"hsl({hue} 45% 52%)"
+
+
+def _icon_path_for_category(category: str) -> str:
+    # Simple icon silhouettes (very lightweight, looks good in cards).
+    # Paths are designed for a 400x520 viewBox.
+    if category == "dresses":
+        # Dress silhouette
+        return (
+            "M200 70 "
+            "C175 70 158 88 156 112 "
+            "L145 190 "
+            "L110 420 "
+            "C108 435 120 448 136 448 "
+            "L264 448 "
+            "C280 448 292 435 290 420 "
+            "L255 190 "
+            "L244 112 "
+            "C242 88 225 70 200 70 Z"
+        )
+    if category == "tops":
+        # T-shirt silhouette
+        return (
+            "M155 120 "
+            "L120 150 "
+            "L80 140 "
+            "L60 190 "
+            "L115 225 "
+            "L115 440 "
+            "L285 440 "
+            "L285 225 "
+            "L340 190 "
+            "L320 140 "
+            "L280 150 "
+            "L245 120 "
+            "C235 150 220 165 200 165 "
+            "C180 165 165 150 155 120 Z"
+        )
+    if category == "bottoms":
+        # Pants silhouette
+        return (
+            "M145 120 "
+            "L125 440 "
+            "L170 440 "
+            "L200 260 "
+            "L230 440 "
+            "L275 440 "
+            "L255 120 Z"
+        )
+    # accessories or fallback: bag
+    return (
+        "M135 210 "
+        "C135 170 165 140 200 140 "
+        "C235 140 265 170 265 210 "
+        "L265 235 "
+        "L300 235 "
+        "L315 440 "
+        "L85 440 "
+        "L100 235 "
+        "L135 235 Z "
+        "M160 210 "
+        "C160 185 178 165 200 165 "
+        "C222 165 240 185 240 210 "
+        "L240 235 "
+        "L160 235 Z"
+    )
+
+
+@app.get("/img/<image_id>.svg")
+def product_image(image_id):
+    p = get_product_by_image_id(image_id)
+    if not p:
+        abort(404)
+
+    name = _svg_escape(p.get("name", ""))
+    category = p.get("category", "accessories")
+    accent = _accent_from_id(image_id)
+    icon_path = _icon_path_for_category(category)
+
+    svg = f"""<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1040" viewBox="0 0 400 520" role="img" aria-label="{name}">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f5f0e8"/>
+      <stop offset="1" stop-color="#e8dfd0"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="{accent}" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="{accent}" stop-opacity="0.00"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#1a1816" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="400" height="520" rx="18" fill="url(#bg)"/>
+  <rect x="0" y="0" width="400" height="520" rx="18" fill="url(#shine)"/>
+
+  <g filter="url(#shadow)">
+    <path d="{icon_path}" fill="{accent}" opacity="0.92"/>
+    <path d="{icon_path}" fill="none" stroke="#2c2826" stroke-opacity="0.10" stroke-width="6"/>
+  </g>
+
+  <text x="28" y="485" font-family="Outfit, system-ui, -apple-system, sans-serif" font-size="18" fill="#2c2826" opacity="0.92">{name}</text>
+  <text x="28" y="510" font-family="Outfit, system-ui, -apple-system, sans-serif" font-size="12" fill="#6b6560">{_svg_escape(category.title())}</text>
+</svg>
+"""
+
+    return Response(
+        svg,
+        mimetype="image/svg+xml",
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
+
+
 @app.route("/")
 def index():
     category = request.args.get("category", "all")
@@ -106,7 +238,6 @@ def index():
         products=products,
         featured=featured,
         categories=CATEGORIES,
-        image_classes=IMAGE_CLASSES,
         cart_count=get_cart_count(),
         wishlist=get_wishlist(),
         current_category=category,
@@ -122,11 +253,9 @@ def product_detail(pid):
     if not product:
         flash("Product not found.")
         return redirect(url_for("index"))
-    img_class = IMAGE_CLASSES.get(product["image"], "")
     return render_template(
         "product.html",
         product=product,
-        image_class=img_class,
         cart_count=get_cart_count(),
         in_wishlist=in_wishlist(pid),
     )
@@ -175,7 +304,6 @@ def cart_page():
         "cart.html",
         cart=cart,
         total=total,
-        image_classes=IMAGE_CLASSES,
         cart_count=get_cart_count(),
     )
 
@@ -261,6 +389,6 @@ if __name__ == "__main__":
     else:
         print("No available port between {} and {}.".format(preferred, port - 1))
         raise SystemExit(1)
-    print("Thread & Weave running at http://localhost:{}".format(port))
+    print("Parini running at http://localhost:{}".format(port))
     print("Press Ctrl+C to stop.")
     app.run(host="0.0.0.0", port=port, debug=True)

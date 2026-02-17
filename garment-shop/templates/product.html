@@ -1,15 +1,15 @@
 {% extends "base.html" %}
-{% block title %}{{ product.name }} — Thread & Weave{% endblock %}
+{% block title %}{{ product.name }} — Parini{% endblock %}
 {% block main %}
 <div class="product-detail-page" style="max-width:1200px;margin:0 auto;padding:2rem 1.5rem;">
   <p style="margin-bottom:1rem;"><a href="{{ url_for('index') }}#shop" style="color:var(--color-muted);">&larr; Back to Shop</a></p>
   <div class="product-detail-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;">
-    <div class="product-detail-image {{ image_class }}" style="aspect-ratio:3/4;border-radius:var(--radius);background:var(--color-sand);"></div>
+    <img class="product-detail-image" src="{{ url_for('product_image', image_id=product.image) }}" alt="{{ product.name }}" style="width:100%;aspect-ratio:3/4;border-radius:var(--radius);background:var(--color-sand);object-fit:cover;">
     <div class="product-detail-info">
       <span class="product-category">{{ product.category }}</span>
       <h1 class="product-detail-name" style="font-family:var(--font-display);font-size:1.5rem;font-weight:600;margin-bottom:0.5rem;">{{ product.name }}</h1>
       <p class="product-detail-price" style="font-size:1.25rem;font-weight:600;margin-bottom:1rem;">${{ "%.2f"|format(product.price) }}</p>
-      <p class="product-detail-desc" style="font-size:0.9rem;color:var(--color-muted);margin-bottom:1.5rem;">Premium fabric, timeless fit. Free shipping on orders over $100.</p>
+      <p class="product-detail-desc" style="font-size:0.9rem;color:var(--color-muted);margin-bottom:1.5rem;">Quality clothing, great fit. Free shipping on orders over $100.</p>
 
       <form action="{{ url_for('add_to_cart') }}" method="post" style="margin-bottom:1rem;">
         <input type="hidden" name="product_id" value="{{ product.id }}">

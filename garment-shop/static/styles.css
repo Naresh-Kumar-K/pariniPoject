@@ -1,5 +1,5 @@
-/* Thread & Weave — Garment Shop
-   Warm, fabric-inspired palette with editorial typography */
+/* Parini — Clothing Shop
+   Clean, modern palette for a clothing store */
 
 :root {
   --color-cream: #f5f0e8;
@@ -430,23 +430,15 @@ img {
 }
 
 .product-image {
+  display: block;
+  width: 100%;
+  height: auto;
   aspect-ratio: 3/4;
-  background-size: cover;
-  background-position: center;
+  object-fit: cover;
+  background: var(--color-sand);
 }
 
-/* Product image placeholders */
-.img-dress1, .img-dress2, .img-dress3, .img-dress4, .img-dress5, .img-dress6 { background: linear-gradient(145deg, #b8a088, #8b7355); }
-.img-top1 { background: linear-gradient(145deg, #e8dfd0, #d4c4b0); }
-.img-top2 { background: linear-gradient(145deg, #2c2826, #4a4542); }
-.img-top3 { background: linear-gradient(145deg, #d4b896, #c4a77d); }
-.img-bottom1 { background: linear-gradient(145deg, #2c2826, #4a4542); }
-.img-bottom2 { background: linear-gradient(145deg, #6b6560, #4a4542); }
-.img-bottom3 { background: linear-gradient(145deg, #e8dfd0, #c4a77d); }
-.img-acc1 { background: linear-gradient(145deg, #c4a77d, #a89078); }
-.img-acc2 { background: linear-gradient(145deg, #8b7355, #6b6560); }
-.img-acc3 { background: linear-gradient(145deg, #e8dfd0, #d4b896); }
-.img-jumpsuit1 { background: linear-gradient(145deg, #4a4542, #2c2826); }
+/* Per-item images are now real SVGs served by Flask (see /img/<id>.svg). */
 
 .product-info {
   padding: var(--space-md);
