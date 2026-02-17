@@ -1,6 +1,45 @@
 {% extends "base.html" %}
 {% block title %}Parini — Clothing Shop{% endblock %}
 {% block main %}
+  {% if show_search_modal %}
+  <div class="search-modal-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:rgba(26,24,22,0.92);display:flex;align-items:center;justify-content:center;padding:2rem;">
+    <a href="{{ url_for('index') }}" style="position:absolute;inset:0;z-index:1;" aria-label="Close search"></a>
+    <div class="search-modal-content" style="background:var(--color-cream);border-radius:12px;width:100%;max-width:1000px;max-height:90vh;overflow-y:auto;position:relative;z-index:2;box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+      <div style="position:sticky;top:0;background:var(--color-cream);padding:1.5rem 2rem;border-bottom:2px solid var(--color-sand);display:flex;justify-content:space-between;align-items:center;z-index:10;">
+        <div>
+          <h2 style="font-family:var(--font-display);font-size:1.75rem;margin:0;color:var(--color-charcoal);">Search Results</h2>
+          <p style="color:var(--color-muted);margin:0.5rem 0 0 0;font-size:0.95rem;">Found {{ search_results|length }} result{{ 's' if search_results|length != 1 else '' }} for "<strong>{{ current_search }}</strong>"</p>
+        </div>
+        <a href="{{ url_for('index') }}" style="width:36px;height:36px;border-radius:50%;background:var(--color-sand);display:flex;align-items:center;justify-content:center;color:var(--color-charcoal);font-size:1.5rem;text-decoration:none;cursor:pointer;transition:background 0.2s;position:relative;z-index:11;" onmouseover="this.style.background='var(--color-terracotta)';this.style.color='white'" onmouseout="this.style.background='var(--color-sand)';this.style.color='var(--color-charcoal)'">&times;</a>
+      </div>
+      <div style="padding:2rem;">
+        {% if search_results %}
+        <div class="product-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1.5rem;">
+          {% for p in search_results %}
+          <article class="product-card" style="background:white;border:2px solid var(--color-sand);border-radius:var(--radius);overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
+            <a href="{{ url_for('product_detail', pid=p.id) }}" class="product-image-link" style="display:block;text-decoration:none;color:inherit;">
+              <img class="product-image" src="{{ url_for('product_image', image_id=p.image) }}" alt="{{ p.name }}" loading="lazy" style="width:100%;aspect-ratio:3/4;object-fit:cover;">
+            </a>
+            <div class="product-info" style="padding:1rem;">
+              <span class="product-category" style="font-size:0.8rem;color:var(--color-muted);text-transform:uppercase;display:block;margin-bottom:0.25rem;">{{ p.category }}</span>
+              <h3 class="product-name" style="font-size:0.95rem;margin:0 0 0.5rem 0;font-weight:500;line-height:1.3;">
+                <a href="{{ url_for('product_detail', pid=p.id) }}" style="color:inherit;text-decoration:none;">{{ p.name }}</a>
+              </h3>
+              <p class="product-price" style="font-size:1rem;font-weight:600;color:var(--color-charcoal);margin:0;">${{ "%.2f"|format(p.price) }}</p>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align:center;padding:4rem 2rem;">
+          <p style="font-size:1.1rem;color:var(--color-muted);margin-bottom:0.5rem;">No products found</p>
+          <p style="color:var(--color-muted);font-size:0.95rem;">Try searching for something else</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
   <section id="home" class="hero">
     <div class="hero-content">
       <p class="hero-tag">Spring 2025</p>
@@ -29,19 +68,19 @@
   <section id="categories" class="categories">
     <h2 class="section-title">Shop by Category</h2>
     <div class="category-grid">
-      <a href="{{ url_for('index', category='dresses') }}" class="category-card">
+      <a href="{{ url_for('category_page', category_name='dresses') }}" class="category-card">
         <div class="category-img category-dresses"></div>
         <span class="category-name">Dresses</span>
       </a>
-      <a href="{{ url_for('index', category='tops') }}" class="category-card">
+      <a href="{{ url_for('category_page', category_name='tops') }}" class="category-card">
         <div class="category-img category-tops"></div>
         <span class="category-name">Tops</span>
       </a>
-      <a href="{{ url_for('index', category='bottoms') }}" class="category-card">
+      <a href="{{ url_for('category_page', category_name='bottoms') }}" class="category-card">
         <div class="category-img category-bottoms"></div>
         <span class="category-name">Bottoms</span>
       </a>
-      <a href="{{ url_for('index', category='accessories') }}" class="category-card">
+      <a href="{{ url_for('category_page', category_name='accessories') }}" class="category-card">
         <div class="category-img category-accessories"></div>
         <span class="category-name">Accessories</span>
       </a>
@@ -70,7 +109,7 @@
 
   <section id="shop" class="shop-section">
     <h2 class="section-title">Shop All</h2>
-    <form class="shop-filters" action="{{ url_for('index') }}" method="get">
+    <form class="shop-filters" action="{{ url_for('index') }}#shop" method="get">
       <input type="hidden" name="search" value="{{ current_search }}">
       <div class="filter-group">
         <label>Category</label>

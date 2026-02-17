@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ category_label }} — Parini{% endblock %}
+{% block main %}
+<div style="max-width:1200px;margin:0 auto;padding:2rem 1.5rem;">
+  <div style="margin-bottom:2rem;">
+    <a href="{{ url_for('index') }}" style="color:var(--color-muted);text-decoration:none;font-size:0.9rem;display:inline-flex;align-items:center;gap:0.5rem;margin-bottom:1rem;">
+      <span>&larr;</span> Back to Home
+    </a>
+    <h1 class="section-title" style="text-align:left;margin-bottom:0.5rem;font-family:var(--font-display);font-size:2.5rem;">{{ category_label }}</h1>
+    <p style="color:var(--color-muted);font-size:1rem;">{{ products|length }} product{{ 's' if products|length != 1 else '' }} available</p>
+  </div>
+
+  {% if products %}
+  <div class="product-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2rem;">
+    {% for p in products %}
+    <article class="product-card">
+      <a href="{{ url_for('product_detail', pid=p.id) }}" class="product-image-link" style="display:block;text-decoration:none;color:inherit;">
+        <img class="product-image" src="{{ url_for('product_image', image_id=p.image) }}" alt="{{ p.name }}" loading="lazy">
+      </a>
+      <div class="product-info">
+        <span class="product-category">{{ p.category }}</span>
+        <h3 class="product-name">
+          <a href="{{ url_for('product_detail', pid=p.id) }}" style="color:inherit;text-decoration:none;">{{ p.name }}</a>
+        </h3>
+        <p class="product-price">${{ "%.2f"|format(p.price) }}</p>
+        <a href="{{ url_for('product_detail', pid=p.id) }}" class="btn btn-primary btn-add-cart">View & Add to Cart</a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div style="text-align:center;padding:4rem 2rem;">
+    <p style="font-size:1.1rem;color:var(--color-muted);margin-bottom:0.5rem;">No products found in this category</p>
+    <a href="{{ url_for('index') }}" class="btn btn-outline">Browse All Products</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -62,9 +62,26 @@ def get_filtered_products(category="all", min_price=None, max_price=None, search
         if max_price is not None and p["price"] > max_price:
             continue
         if search:
-            q = search.lower()
-            if q not in p["name"].lower() and q not in p["category"].lower():
-                continue
+            q = search.lower().strip()
+            if q:
+                # Search in name, category, and individual words
+                name_lower = p["name"].lower()
+                category_lower = p["category"].lower()
+                # Check if search query matches any part of the name or category
+                # Also check individual words in the product name
+                name_words = name_lower.split()
+                search_words = q.split()
+                
+                matches = False
+                # Check if all search words are found in name or category
+                if all(word in name_lower or word in category_lower for word in search_words):
+                    matches = True
+                # Also check if query is contained in name or category
+                elif q in name_lower or q in category_lower:
+                    matches = True
+                
+                if not matches:
+                    continue
         out.append(p)
     return out
 
@@ -236,18 +253,28 @@ def index():
     min_price = request.args.get("minPrice", type=lambda x: int(x) if x else None)
     max_price = request.args.get("maxPrice", type=lambda x: int(x) if x else None)
     search = request.args.get("search", "").strip()
-    products = get_filtered_products(category, min_price, max_price, search)
+    show_search_modal = bool(search)  # Show modal if there's a search query
+    
+    # For the main page, don't filter by search - show all products
+    products = get_filtered_products(category, min_price, max_price, "")
     featured = PRODUCTS[:8]
     
     # Get random dresses for hero section (3 items)
     dresses = [p for p in PRODUCTS if p["category"] == "dresses"]
     random_dresses = random.sample(dresses, min(len(dresses), 3))  # Show 3 random dresses
     
+    # Get search results separately for the modal
+    search_results = []
+    if search:
+        search_results = get_filtered_products("all", None, None, search)
+    
     return render_template(
         "index.html",
         products=products,
         featured=featured,
         random_dresses=random_dresses,
+        search_results=search_results,
+        show_search_modal=show_search_modal,
         categories=CATEGORIES,
         cart_count=get_cart_count(),
         wishlist=get_wishlist(),
@@ -415,6 +442,31 @@ def signup():
         return redirect(url_for("index"))
     
     return render_template("signup.html")
+
+
+@app.route("/category/<category_name>")
+def category_page(category_name):
+    # Check if user is registered, redirect to signup if not
+    if not session.get("user_registered"):
+        return redirect(url_for("signup"))
+    
+    # Validate category
+    category_map = {c["id"]: c["label"] for c in CATEGORIES}
+    if category_name not in category_map:
+        flash("Category not found.")
+        return redirect(url_for("index"))
+    
+    # Get products for this category
+    products = get_filtered_products(category_name, None, None, "")
+    category_label = category_map[category_name]
+    
+    return render_template(
+        "category.html",
+        products=products,
+        category_name=category_name,
+        category_label=category_label,
+        cart_count=get_cart_count(),
+    )
 
 
 @app.route("/login")

@@ -10,6 +10,13 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+  {% if request.endpoint == 'signup' %}
+  <header class="header" style="border-bottom:1px solid var(--color-sand);">
+    <div class="header-inner" style="justify-content:center;">
+      <a href="{{ url_for('index') }}" class="logo" style="text-decoration:none;">Parini</a>
+    </div>
+  </header>
+  {% else %}
   <header class="header">
     <div class="header-inner">
       <a href="{{ url_for('index') }}" class="logo">Parini</a>
@@ -33,6 +40,7 @@
       </div>
     </div>
   </header>
+  {% endif %}
 
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -48,6 +56,7 @@
     {% block main %}{% endblock %}
   </main>
 
+  {% if request.endpoint != 'signup' %}
   <footer class="footer" id="footer">
     <div class="footer-inner">
       <div class="footer-brand">
@@ -57,10 +66,10 @@
       <div class="footer-links">
         <div class="footer-col">
           <h4>Shop</h4>
-          <a href="{{ url_for('index') }}?category=dresses">Dresses</a>
-          <a href="{{ url_for('index') }}?category=tops">Tops</a>
-          <a href="{{ url_for('index') }}?category=bottoms">Bottoms</a>
-          <a href="{{ url_for('index') }}?category=accessories">Accessories</a>
+          <a href="{{ url_for('category_page', category_name='dresses') }}">Dresses</a>
+          <a href="{{ url_for('category_page', category_name='tops') }}">Tops</a>
+          <a href="{{ url_for('category_page', category_name='bottoms') }}">Bottoms</a>
+          <a href="{{ url_for('category_page', category_name='accessories') }}">Accessories</a>
         </div>
         <div class="footer-col">
           <h4>Help</h4>
@@ -79,5 +88,6 @@
       <p class="footer-copy">&copy; 2025 Parini. All rights reserved.</p>
     </div>
   </footer>
+  {% endif %}
 </body>
 </html>
