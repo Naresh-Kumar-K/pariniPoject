@@ -538,6 +538,13 @@ def contact_submit():
     return redirect(url_for("contact_page"))
 
 
+@app.route("/store-locator")
+def store_locator_page():
+    if not session.get("user_registered"):
+        return redirect(url_for("signup"))
+    return render_template("store-locator.html", cart_count=get_cart_count())
+
+
 if __name__ == "__main__":
     import socket
     preferred = int(os.environ.get("PORT", 3000))

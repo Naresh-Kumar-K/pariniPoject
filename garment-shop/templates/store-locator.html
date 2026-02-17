@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Store Locator — Parini{% endblock %}
+{% block main %}
+<div style="max-width:900px;margin:0 auto;padding:3rem 1.5rem;">
+  <h1 style="font-family:var(--font-display);font-size:2.5rem;margin-bottom:1rem;">Store Locator</h1>
+  
+  <div style="margin-top:2rem;">
+    <p style="color:var(--color-muted);margin-bottom:2rem;line-height:1.8;">
+      Visit our location to experience our collection in person. Our store offers a curated selection of clothing and accessories with personalized styling assistance.
+    </p>
+  </div>
+
+  <div style="background:var(--color-cream);padding:2rem;border-radius:var(--radius);margin-bottom:2rem;">
+    <h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--color-charcoal);">Parini Store</h2>
+    <div style="margin-bottom:1.5rem;">
+      <h3 style="font-size:1.2rem;margin-bottom:0.75rem;color:var(--color-charcoal);">Dhanalakshmi College of Engineering (DCE)</h3>
+      <p style="color:var(--color-muted);line-height:1.8;margin-bottom:1rem;">
+        Dr. V.P.R. Nagar, Manimangalam Post<br>
+        off Tambaram-Sriperumbudur Road<br>
+        Chennai - 601 301, Tamil Nadu, India
+      </p>
+      <a href="https://maps.app.goo.gl/i3eY4pzNJzfRCUZ69" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display:inline-block;margin-top:0.5rem;">View on Google Maps</a>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-top:1.5rem;">
+      <div>
+        <h4 style="font-size:1rem;margin-bottom:0.5rem;color:var(--color-charcoal);">Store Hours</h4>
+        <p style="color:var(--color-muted);line-height:1.8;font-size:0.95rem;">
+          Monday - Saturday: 10:00 AM - 7:00 PM<br>
+          Sunday: 11:00 AM - 6:00 PM
+        </p>
+      </div>
+      <div>
+        <h4 style="font-size:1rem;margin-bottom:0.5rem;color:var(--color-charcoal);">Contact</h4>
+        <p style="color:var(--color-muted);line-height:1.8;font-size:0.95rem;">
+          Phone: +91 98765 43210<br>
+          Email: hello@parini.in
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--color-sand);">
+      <h4 style="font-size:1rem;margin-bottom:0.75rem;color:var(--color-charcoal);">How to Reach</h4>
+      <p style="color:var(--color-muted);line-height:1.8;font-size:0.95rem;margin-bottom:0.5rem;">
+        <strong>By Road:</strong> Located on Tambaram-Sriperumbudur Road, easily accessible by car or bus.
+      </p>
+      <p style="color:var(--color-muted);line-height:1.8;font-size:0.95rem;">
+        <strong>Public Transport:</strong> Well connected via local bus routes. Nearest bus stop: Manimangalam.
+      </p>
+    </div>
+  </div>
+
+  <div style="background:var(--color-cream);padding:1.5rem;border-radius:var(--radius);margin-bottom:2rem;">
+    <h3 style="font-size:1.2rem;margin-bottom:1rem;color:var(--color-charcoal);">Store Features</h3>
+    <ul style="list-style:none;padding:0;color:var(--color-muted);line-height:2;">
+      <li style="padding:0.25rem 0;">✓ Personal styling consultations</li>
+      <li style="padding:0.25rem 0;">✓ Try before you buy</li>
+      <li style="padding:0.25rem 0;">✓ Exclusive in-store collections</li>
+      <li style="padding:0.25rem 0;">✓ Alteration services available</li>
+      <li style="padding:0.25rem 0;">✓ Gift wrapping services</li>
+    </ul>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <a href="{{ url_for('index') }}" class="btn btn-outline">Back to Home</a>
+  </div>
+</div>
+{% endblock %}
