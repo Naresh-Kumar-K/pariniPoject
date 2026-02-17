@@ -25,7 +25,7 @@
               <h3 class="product-name" style="font-size:0.95rem;margin:0 0 0.5rem 0;font-weight:500;line-height:1.3;">
                 <a href="{{ url_for('product_detail', pid=p.id) }}" style="color:inherit;text-decoration:none;">{{ p.name }}</a>
               </h3>
-              <p class="product-price" style="font-size:1rem;font-weight:600;color:var(--color-charcoal);margin:0;">${{ "%.2f"|format(p.price) }}</p>
+              <p class="product-price" style="font-size:1rem;font-weight:600;color:var(--color-charcoal);margin:0;">₹{{ "{:,}".format(p.price) }}</p>
             </div>
           </article>
           {% endfor %}
@@ -58,7 +58,7 @@
           <h3 class="product-name" style="font-size:1rem;margin:0.5rem 0;font-weight:500;">
             <a href="{{ url_for('product_detail', pid=dress.id) }}" style="color:inherit;text-decoration:none;">{{ dress.name }}</a>
           </h3>
-          <p class="product-price" style="font-size:1rem;font-weight:600;color:var(--color-charcoal);margin:0;">${{ "%.2f"|format(dress.price) }}</p>
+            <p class="product-price" style="font-size:1rem;font-weight:600;color:var(--color-charcoal);margin:0;">₹{{ "{:,}".format(dress.price) }}</p>
         </div>
       </article>
       {% endfor %}
@@ -98,7 +98,7 @@
         <div class="product-info">
           <span class="product-category">{{ p.category }}</span>
           <h3 class="product-name"><a href="{{ url_for('product_detail', pid=p.id) }}" style="color:inherit;text-decoration:none;">{{ p.name }}</a></h3>
-          <p class="product-price">${{ "%.2f"|format(p.price) }}</p>
+          <p class="product-price">₹{{ "{:,}".format(p.price) }}</p>
           <a href="{{ url_for('product_detail', pid=p.id) }}" class="btn btn-primary btn-add-cart">View & Add to Cart</a>
         </div>
       </article>
@@ -121,11 +121,11 @@
       </div>
       <div class="filter-group">
         <label>Min price</label>
-        <input type="number" name="minPrice" placeholder="$0" min="0" step="10" value="{{ current_min_price }}">
+        <input type="number" name="minPrice" placeholder="₹0" min="0" step="100" value="{{ current_min_price }}">
       </div>
       <div class="filter-group">
         <label>Max price</label>
-        <input type="number" name="maxPrice" placeholder="$300" min="0" step="10" value="{{ current_max_price }}">
+        <input type="number" name="maxPrice" placeholder="₹10000" min="0" step="100" value="{{ current_max_price }}">
       </div>
       <div class="filter-group" style="align-self:flex-end;">
         <button type="submit" class="btn btn-primary">Apply</button>
@@ -141,7 +141,7 @@
         <div class="product-info">
           <span class="product-category">{{ p.category }}</span>
           <h3 class="product-name"><a href="{{ url_for('product_detail', pid=p.id) }}" style="color:inherit;text-decoration:none;">{{ p.name }}</a></h3>
-          <p class="product-price">${{ "%.2f"|format(p.price) }}</p>
+          <p class="product-price">₹{{ "{:,}".format(p.price) }}</p>
           <a href="{{ url_for('product_detail', pid=p.id) }}" class="btn btn-primary btn-add-cart">View & Add to Cart</a>
         </div>
       </article>

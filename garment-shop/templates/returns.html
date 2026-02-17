@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Returns — Parini{% endblock %}
+{% block main %}
+<div style="max-width:800px;margin:0 auto;padding:3rem 1.5rem;">
+  <h1 style="font-family:var(--font-display);font-size:2.5rem;margin-bottom:1rem;">Returns & Exchanges</h1>
+  
+  <div style="margin-top:2rem;">
+    <h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--color-charcoal);">Return Policy</h2>
+    <p style="color:var(--color-muted);margin-bottom:1rem;line-height:1.8;">
+      We want you to love your purchase! If you're not completely satisfied, you can return or exchange items within 30 days of delivery. Items must be unworn, unwashed, and in their original packaging with tags attached.
+    </p>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--color-charcoal);">How to Return</h2>
+    <ol style="padding-left:1.5rem;color:var(--color-muted);line-height:2;">
+      <li>Log into your account and go to "Orders"</li>
+      <li>Select the item you want to return</li>
+      <li>Print the prepaid return label</li>
+      <li>Package the item securely</li>
+      <li>Drop off at any shipping location</li>
+    </ol>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--color-charcoal);">Refund Process</h2>
+    <p style="color:var(--color-muted);margin-bottom:1rem;line-height:1.8;">
+      Once we receive your return, we'll process your refund within 5-7 business days. Refunds will be issued to the original payment method. Shipping costs are non-refundable unless the item was defective or incorrect.
+    </p>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--color-charcoal);">Exchanges</h2>
+    <p style="color:var(--color-muted);margin-bottom:1rem;line-height:1.8;">
+      Need a different size or color? Exchanges are free! Simply follow the return process and select "Exchange" instead of "Return" when initiating your request.
+    </p>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <a href="{{ url_for('index') }}" class="btn btn-outline">Back to Home</a>
+  </div>
+</div>
+{% endblock %}

@@ -11,23 +11,23 @@
       <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);">Email</label>
       <input type="email" name="email" required placeholder="jane@example.com" value="{{ user_data.email if user_data else '' }}" style="padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
       <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);">Address</label>
-      <input type="text" name="address" required placeholder="123 Main St" value="{{ user_data.address if user_data else '' }}" style="padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
+      <input type="text" name="address" required placeholder="123 Fashion Street" value="{{ user_data.address if user_data else '' }}" style="padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
       <div class="checkout-row" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
         <div>
           <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);">City</label>
-          <input type="text" name="city" required placeholder="New York" value="{{ user_data.city if user_data else '' }}" style="width:100%;padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
+          <input type="text" name="city" required placeholder="Mumbai" value="{{ user_data.city if user_data else '' }}" style="width:100%;padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
         </div>
         <div>
-          <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);">ZIP</label>
-          <input type="text" name="zip" required placeholder="10001" value="{{ user_data.zip_code if user_data else '' }}" style="width:100%;padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
+          <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);">PIN Code</label>
+          <input type="text" name="zip" required placeholder="400050" value="{{ user_data.zip_code if user_data else '' }}" style="width:100%;padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
         </div>
       </div>
       <button type="submit" class="btn btn-primary btn-block">Place Order</button>
     </form>
     <div class="checkout-summary" style="padding:1rem;background:var(--color-sand);border-radius:var(--radius);position:sticky;top:1rem;">
       <h3 style="font-size:1rem;margin-bottom:0.5rem;">Order Summary</h3>
-      <p>Total: <strong>${{ "%.2f"|format(total) }}</strong></p>
-      <p class="checkout-note" style="font-size:0.85rem;color:var(--color-muted);margin-top:0.5rem;">Free shipping on orders over $100.</p>
+      <p>Total: <strong>₹{{ "{:,}".format(total) }}</strong></p>
+      <p class="checkout-note" style="font-size:0.85rem;color:var(--color-muted);margin-top:0.5rem;">Free shipping on orders over ₹2,000.</p>
     </div>
   </div>
 </div>

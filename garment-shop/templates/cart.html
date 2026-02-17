@@ -11,7 +11,7 @@
       <div class="cart-item-details" style="flex:1;">
         <h4 style="font-size:0.95rem;margin-bottom:0.25rem;">{{ item.name }}</h4>
         <p style="font-size:0.85rem;color:var(--color-muted);">{{ item.size }} / {{ item.color }} &times; {{ item.quantity }}</p>
-        <p style="font-weight:500;">${{ "%.2f"|format(item.price * item.quantity) }}</p>
+        <p style="font-weight:500;">₹{{ "{:,}".format(item.price * item.quantity) }}</p>
         <form action="{{ url_for('update_cart') }}" method="post" style="display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem;">
           <input type="hidden" name="index" value="{{ loop.index0 }}">
           <button type="submit" name="action" value="minus" class="qty-btn" style="width:28px;height:28px;border:1px solid var(--color-sand);border-radius:var(--radius);background:#fff;cursor:pointer;">&minus;</button>
@@ -24,7 +24,7 @@
     {% endfor %}
   </div>
   <div style="padding:1rem 0;border-top:1px solid var(--color-sand);">
-    <p style="font-size:1.1rem;margin-bottom:1rem;">Subtotal: <strong>${{ "%.2f"|format(total) }}</strong></p>
+    <p style="font-size:1.1rem;margin-bottom:1rem;">Subtotal: <strong>₹{{ "{:,}".format(total) }}</strong></p>
     <a href="{{ url_for('checkout') }}" class="btn btn-primary">Proceed to Checkout</a>
   </div>
   {% else %}

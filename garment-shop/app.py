@@ -1,6 +1,6 @@
 """
-Parini — Clothing Shop (Flask, Python only — no JavaScript)
-All behavior is server-side: forms, session cart/wishlist, filters, checkout.
+Parini — Clothing Shop
+Flask-based e-commerce platform for clothing and accessories.
 """
 import os
 import random
@@ -9,24 +9,23 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-change-in-production")
 
-# Product and category data
 PRODUCTS = [
-    {"id": 1, "name": "Midi Slip Dress", "category": "dresses", "price": 145, "sizes": ["XS", "S", "M", "L"], "colors": ["Blush", "Black", "Ivory"], "image": "dress1"},
-    {"id": 2, "name": "Floral Maxi Dress", "category": "dresses", "price": 168, "sizes": ["S", "M", "L"], "colors": ["Navy", "Sage"], "image": "dress2"},
-    {"id": 3, "name": "Wrap Midi Dress", "category": "dresses", "price": 125, "sizes": ["XS", "S", "M", "L", "XL"], "colors": ["Terracotta", "Black"], "image": "dress3"},
-    {"id": 4, "name": "Evening Gown", "category": "dresses", "price": 289, "sizes": ["S", "M", "L"], "colors": ["Black", "Emerald"], "image": "dress4"},
-    {"id": 5, "name": "Shirt Dress", "category": "dresses", "price": 98, "sizes": ["XS", "S", "M", "L"], "colors": ["White", "Striped"], "image": "dress5"},
-    {"id": 6, "name": "Organic Cotton Tee", "category": "tops", "price": 42, "sizes": ["XS", "S", "M", "L", "XL"], "colors": ["White", "Black", "Oat"], "image": "top1"},
-    {"id": 7, "name": "Linen Overshirt", "category": "tops", "price": 128, "sizes": ["S", "M", "L"], "colors": ["Beige", "Olive"], "image": "top2"},
-    {"id": 8, "name": "Silk Blouse", "category": "tops", "price": 89, "sizes": ["XS", "S", "M", "L"], "colors": ["Blush", "White"], "image": "top3"},
-    {"id": 9, "name": "Wide-Leg Trousers", "category": "bottoms", "price": 96, "sizes": ["XS", "S", "M", "L"], "colors": ["Black", "Cream"], "image": "bottom1"},
-    {"id": 10, "name": "High-Waist Skirt", "category": "bottoms", "price": 72, "sizes": ["S", "M", "L"], "colors": ["Plaid", "Black"], "image": "bottom2"},
-    {"id": 11, "name": "Linen Trousers", "category": "bottoms", "price": 88, "sizes": ["S", "M", "L"], "colors": ["White", "Navy"], "image": "bottom3"},
-    {"id": 12, "name": "Leather Crossbody", "category": "accessories", "price": 165, "sizes": ["One Size"], "colors": ["Tan", "Black"], "image": "acc1"},
-    {"id": 13, "name": "Wool Scarf", "category": "accessories", "price": 58, "sizes": ["One Size"], "colors": ["Camel", "Grey"], "image": "acc2"},
-    {"id": 14, "name": "Straw Tote", "category": "accessories", "price": 78, "sizes": ["One Size"], "colors": ["Natural"], "image": "acc3"},
-    {"id": 15, "name": "Cocktail Dress", "category": "dresses", "price": 195, "sizes": ["XS", "S", "M", "L"], "colors": ["Red", "Black"], "image": "dress6"},
-    {"id": 16, "name": "Casual Jumpsuit", "category": "dresses", "price": 112, "sizes": ["S", "M", "L"], "colors": ["Denim", "Black"], "image": "jumpsuit1"},
+    {"id": 1, "name": "Midi Slip Dress", "category": "dresses", "price": 3499, "sizes": ["XS", "S", "M", "L"], "colors": ["Blush", "Black", "Ivory"], "image": "dress1"},
+    {"id": 2, "name": "Floral Maxi Dress", "category": "dresses", "price": 3999, "sizes": ["S", "M", "L"], "colors": ["Navy", "Sage"], "image": "dress2"},
+    {"id": 3, "name": "Wrap Midi Dress", "category": "dresses", "price": 2999, "sizes": ["XS", "S", "M", "L", "XL"], "colors": ["Terracotta", "Black"], "image": "dress3"},
+    {"id": 4, "name": "Evening Gown", "category": "dresses", "price": 6999, "sizes": ["S", "M", "L"], "colors": ["Black", "Emerald"], "image": "dress4"},
+    {"id": 5, "name": "Shirt Dress", "category": "dresses", "price": 2399, "sizes": ["XS", "S", "M", "L"], "colors": ["White", "Striped"], "image": "dress5"},
+    {"id": 6, "name": "Organic Cotton Tee", "category": "tops", "price": 999, "sizes": ["XS", "S", "M", "L", "XL"], "colors": ["White", "Black", "Oat"], "image": "top1"},
+    {"id": 7, "name": "Linen Overshirt", "category": "tops", "price": 3099, "sizes": ["S", "M", "L"], "colors": ["Beige", "Olive"], "image": "top2"},
+    {"id": 8, "name": "Silk Blouse", "category": "tops", "price": 2199, "sizes": ["XS", "S", "M", "L"], "colors": ["Blush", "White"], "image": "top3"},
+    {"id": 9, "name": "Wide-Leg Trousers", "category": "bottoms", "price": 2299, "sizes": ["XS", "S", "M", "L"], "colors": ["Black", "Cream"], "image": "bottom1"},
+    {"id": 10, "name": "High-Waist Skirt", "category": "bottoms", "price": 1799, "sizes": ["S", "M", "L"], "colors": ["Plaid", "Black"], "image": "bottom2"},
+    {"id": 11, "name": "Linen Trousers", "category": "bottoms", "price": 2099, "sizes": ["S", "M", "L"], "colors": ["White", "Navy"], "image": "bottom3"},
+    {"id": 12, "name": "Leather Crossbody", "category": "accessories", "price": 3999, "sizes": ["One Size"], "colors": ["Tan", "Black"], "image": "acc1"},
+    {"id": 13, "name": "Wool Scarf", "category": "accessories", "price": 1399, "sizes": ["One Size"], "colors": ["Camel", "Grey"], "image": "acc2"},
+    {"id": 14, "name": "Straw Tote", "category": "accessories", "price": 1899, "sizes": ["One Size"], "colors": ["Natural"], "image": "acc3"},
+    {"id": 15, "name": "Cocktail Dress", "category": "dresses", "price": 4699, "sizes": ["XS", "S", "M", "L"], "colors": ["Red", "Black"], "image": "dress6"},
+    {"id": 16, "name": "Casual Jumpsuit", "category": "dresses", "price": 2699, "sizes": ["S", "M", "L"], "colors": ["Denim", "Black"], "image": "jumpsuit1"},
 ]
 
 CATEGORIES = [
@@ -400,7 +399,7 @@ def checkout():
             flash("Please fill in all shipping fields.")
             return render_template("checkout.html", cart=cart, total=total, cart_count=get_cart_count(), user_data=user_data)
         session["cart"] = []
-        flash(f"Thank you! Your order (${total:.2f}) has been placed. We'll send confirmation to {email}.")
+        flash(f"Thank you! Your order (₹{total:,.0f}) has been placed. We'll send confirmation to {email}.")
         return redirect(url_for("index"))
     return render_template("checkout.html", cart=cart, total=total, cart_count=get_cart_count(), user_data=user_data)
 
@@ -485,6 +484,58 @@ def logout():
     session.clear()
     flash("You have been logged out successfully.")
     return redirect(url_for("signup"))
+
+
+@app.route("/shipping")
+def shipping_page():
+    if not session.get("user_registered"):
+        return redirect(url_for("signup"))
+    return render_template("shipping.html", cart_count=get_cart_count())
+
+
+@app.route("/returns")
+def returns_page():
+    if not session.get("user_registered"):
+        return redirect(url_for("signup"))
+    return render_template("returns.html", cart_count=get_cart_count())
+
+
+@app.route("/faq")
+def faq_page():
+    if not session.get("user_registered"):
+        return redirect(url_for("signup"))
+    return render_template("faq.html", cart_count=get_cart_count())
+
+
+@app.route("/about")
+def about_page():
+    if not session.get("user_registered"):
+        return redirect(url_for("signup"))
+    return render_template("about.html", cart_count=get_cart_count())
+
+
+@app.route("/contact")
+def contact_page():
+    if not session.get("user_registered"):
+        return redirect(url_for("signup"))
+    return render_template("contact.html", cart_count=get_cart_count())
+
+
+@app.route("/contact/submit", methods=["POST"])
+def contact_submit():
+    if not session.get("user_registered"):
+        return redirect(url_for("signup"))
+    name = request.form.get("name", "").strip()
+    email = request.form.get("email", "").strip()
+    subject = request.form.get("subject", "").strip()
+    message = request.form.get("message", "").strip()
+    
+    if not all([name, email, subject, message]):
+        flash("Please fill in all fields.")
+        return redirect(url_for("contact_page"))
+    
+    flash("Thank you for your message! We'll get back to you soon.")
+    return redirect(url_for("contact_page"))
 
 
 if __name__ == "__main__":
