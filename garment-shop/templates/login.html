@@ -1,15 +1,26 @@
 {% extends "base.html" %}
 {% block title %}Account — Parini{% endblock %}
 {% block main %}
-<div style="max-width:380px;margin:2rem auto;padding:2rem;">
+<div style="max-width:500px;margin:2rem auto;padding:2rem;">
   <h2 style="font-family:var(--font-display);font-size:1.5rem;margin-bottom:1.5rem;">Account</h2>
-  <form action="{{ url_for('login') }}" method="post" class="login-form" style="display:flex;flex-direction:column;gap:1rem;">
-    <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);">Email</label>
-    <input type="email" name="email" placeholder="you@example.com" required style="padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
-    <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);">Password</label>
-    <input type="password" name="password" placeholder="••••••••" required style="padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
-    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+  
+  {% if user_data %}
+  <div style="background:var(--color-cream);border:2px solid var(--color-sand);border-radius:var(--radius);padding:1.5rem;margin-bottom:2rem;">
+    <h3 style="font-size:1.1rem;margin-bottom:1rem;color:var(--color-charcoal);">Your Information</h3>
+    <div style="display:flex;flex-direction:column;gap:0.75rem;font-size:0.95rem;">
+      <div><strong>Name:</strong> {{ user_data.name }}</div>
+      <div><strong>Email:</strong> {{ user_data.email }}</div>
+      {% if user_data.phone %}<div><strong>Phone:</strong> {{ user_data.phone }}</div>{% endif %}
+      {% if user_data.address %}<div><strong>Address:</strong> {{ user_data.address }}</div>{% endif %}
+      {% if user_data.city or user_data.zip_code %}
+      <div><strong>City/ZIP:</strong> {{ user_data.city }}{% if user_data.city and user_data.zip_code %}, {% endif %}{{ user_data.zip_code }}</div>
+      {% endif %}
+    </div>
+  </div>
+  
+  <form action="{{ url_for('logout') }}" method="post" style="margin-top:1.5rem;">
+    <button type="submit" class="btn btn-primary" style="width:100%;padding:0.875rem;font-size:1rem;">Logout</button>
   </form>
-  <p style="margin-top:1rem;font-size:0.9rem;color:var(--color-muted);">Don't have an account? <a href="{{ url_for('index') }}#contact" style="color:var(--color-charcoal);font-weight:500;">Sign up</a></p>
+  {% endif %}
 </div>
 {% endblock %}

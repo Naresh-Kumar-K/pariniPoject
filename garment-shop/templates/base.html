@@ -29,7 +29,7 @@
           &#128722;
           <span class="cart-count {% if cart_count and cart_count > 0 %}has-items{% endif %}">{{ cart_count or 0 }}</span>
         </a>
-        <a href="{{ url_for('login') }}" class="icon-btn" aria-label="Account" style="text-decoration:none;color:inherit;">Account</a>
+        <a href="{{ url_for('login') }}" class="icon-btn" aria-label="Account" style="text-decoration:none;color:inherit;">{% if session.get('user_registered') %}Account{% else %}Sign Up{% endif %}</a>
       </div>
     </div>
   </header>

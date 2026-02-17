@@ -7,19 +7,19 @@
     <form action="{{ url_for('checkout') }}" method="post" class="checkout-form" style="display:flex;flex-direction:column;gap:1rem;">
       <h3 style="font-size:1.1rem;margin-bottom:0.5rem;">Shipping</h3>
       <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);">Full name</label>
-      <input type="text" name="name" required placeholder="Jane Doe" style="padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
+      <input type="text" name="name" required placeholder="Jane Doe" value="{{ user_data.name if user_data else '' }}" style="padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
       <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);">Email</label>
-      <input type="email" name="email" required placeholder="jane@example.com" style="padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
+      <input type="email" name="email" required placeholder="jane@example.com" value="{{ user_data.email if user_data else '' }}" style="padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
       <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);">Address</label>
-      <input type="text" name="address" required placeholder="123 Main St" style="padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
+      <input type="text" name="address" required placeholder="123 Main St" value="{{ user_data.address if user_data else '' }}" style="padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
       <div class="checkout-row" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
         <div>
           <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);">City</label>
-          <input type="text" name="city" required placeholder="New York" style="width:100%;padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
+          <input type="text" name="city" required placeholder="New York" value="{{ user_data.city if user_data else '' }}" style="width:100%;padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
         </div>
         <div>
           <label style="font-size:0.85rem;font-weight:500;color:var(--color-muted);">ZIP</label>
-          <input type="text" name="zip" required placeholder="10001" style="width:100%;padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
+          <input type="text" name="zip" required placeholder="10001" value="{{ user_data.zip_code if user_data else '' }}" style="width:100%;padding:0.5rem 1rem;font-size:1rem;border:2px solid var(--color-sand);border-radius:var(--radius);">
         </div>
       </div>
       <button type="submit" class="btn btn-primary btn-block">Place Order</button>

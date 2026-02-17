@@ -8,9 +8,21 @@
       <p class="hero-desc">Curated clothing for every occasion. Dresses, tops, bottoms, and accessories—style that fits your life.</p>
       <a href="#shop" class="btn btn-primary">Shop Clothing</a>
     </div>
-    <div class="hero-visual">
-      <div class="hero-card hero-card-1"><span class="card-label">New Arrivals</span></div>
-      <div class="hero-card hero-card-2"><span class="card-label">Clothing & Accessories</span></div>
+    <div class="hero-visual" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:100%;">
+      {% for dress in random_dresses %}
+      <article class="product-card" style="background:var(--color-cream);border:2px solid var(--color-sand);border-radius:var(--radius);overflow:hidden;">
+        <a href="{{ url_for('product_detail', pid=dress.id) }}" class="product-image-link" style="display:block;text-decoration:none;color:inherit;">
+          <img class="product-image" src="{{ url_for('product_image', image_id=dress.image) }}" alt="{{ dress.name }}" loading="lazy" style="width:100%;aspect-ratio:3/4;object-fit:cover;">
+        </a>
+        <div class="product-info" style="padding:1rem;">
+          <span class="product-category" style="font-size:0.85rem;color:var(--color-muted);text-transform:uppercase;">{{ dress.category }}</span>
+          <h3 class="product-name" style="font-size:1rem;margin:0.5rem 0;font-weight:500;">
+            <a href="{{ url_for('product_detail', pid=dress.id) }}" style="color:inherit;text-decoration:none;">{{ dress.name }}</a>
+          </h3>
+          <p class="product-price" style="font-size:1rem;font-weight:600;color:var(--color-charcoal);margin:0;">${{ "%.2f"|format(dress.price) }}</p>
+        </div>
+      </article>
+      {% endfor %}
     </div>
   </section>
 

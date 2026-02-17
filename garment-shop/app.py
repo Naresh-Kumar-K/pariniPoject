@@ -3,6 +3,7 @@ Parini — Clothing Shop (Flask, Python only — no JavaScript)
 All behavior is server-side: forms, session cart/wishlist, filters, checkout.
 """
 import os
+import random
 from flask import Flask, render_template, request, redirect, url_for, session, flash, Response, abort
 
 app = Flask(__name__)
@@ -227,16 +228,26 @@ def product_image(image_id):
 
 @app.route("/")
 def index():
+    # Check if user is registered, redirect to signup if not
+    if not session.get("user_registered"):
+        return redirect(url_for("signup"))
+    
     category = request.args.get("category", "all")
     min_price = request.args.get("minPrice", type=lambda x: int(x) if x else None)
     max_price = request.args.get("maxPrice", type=lambda x: int(x) if x else None)
     search = request.args.get("search", "").strip()
     products = get_filtered_products(category, min_price, max_price, search)
     featured = PRODUCTS[:8]
+    
+    # Get random dresses for hero section (3 items)
+    dresses = [p for p in PRODUCTS if p["category"] == "dresses"]
+    random_dresses = random.sample(dresses, min(len(dresses), 3))  # Show 3 random dresses
+    
     return render_template(
         "index.html",
         products=products,
         featured=featured,
+        random_dresses=random_dresses,
         categories=CATEGORIES,
         cart_count=get_cart_count(),
         wishlist=get_wishlist(),
@@ -341,10 +352,17 @@ def wishlist_toggle():
 
 @app.route("/checkout", methods=["GET", "POST"])
 def checkout():
+    # Check if user is registered
+    if not session.get("user_registered"):
+        flash("Please sign up to proceed with checkout.")
+        return redirect(url_for("signup"))
+    
     cart = get_cart()
     if not cart:
         return redirect(url_for("cart_page"))
     total = get_cart_total()
+    user_data = session.get("user_data", {})
+    
     if request.method == "POST":
         name = request.form.get("name", "").strip()
         email = request.form.get("email", "").strip()
@@ -353,11 +371,11 @@ def checkout():
         zip_code = request.form.get("zip", "").strip()
         if not all([name, email, address, city, zip_code]):
             flash("Please fill in all shipping fields.")
-            return render_template("checkout.html", cart=cart, total=total, cart_count=get_cart_count())
+            return render_template("checkout.html", cart=cart, total=total, cart_count=get_cart_count(), user_data=user_data)
         session["cart"] = []
         flash(f"Thank you! Your order (${total:.2f}) has been placed. We'll send confirmation to {email}.")
         return redirect(url_for("index"))
-    return render_template("checkout.html", cart=cart, total=total, cart_count=get_cart_count())
+    return render_template("checkout.html", cart=cart, total=total, cart_count=get_cart_count(), user_data=user_data)
 
 
 @app.route("/newsletter", methods=["POST"])
@@ -366,12 +384,55 @@ def newsletter():
     return redirect(url_for("index") + "#contact")
 
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
     if request.method == "POST":
-        flash("Login is for display only. In a real site this would sign you in.")
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+        password = request.form.get("password", "").strip()
+        phone = request.form.get("phone", "").strip()
+        address = request.form.get("address", "").strip()
+        city = request.form.get("city", "").strip()
+        zip_code = request.form.get("zip_code", "").strip()
+        
+        # Validate required fields
+        if not all([name, email, password]):
+            flash("Please fill in all required fields (Name, Email, Password).")
+            return render_template("signup.html")
+        
+        # Store user data in session
+        session["user_registered"] = True
+        session["user_data"] = {
+            "name": name,
+            "email": email,
+            "phone": phone,
+            "address": address,
+            "city": city,
+            "zip_code": zip_code,
+        }
+        
+        flash(f"Welcome, {name}! Your account has been created.")
         return redirect(url_for("index"))
-    return render_template("login.html")
+    
+    return render_template("signup.html")
+
+
+@app.route("/login")
+def login():
+    # Check if user is registered, redirect to signup if not
+    if not session.get("user_registered"):
+        return redirect(url_for("signup"))
+    
+    user_data = session.get("user_data", {})
+    return render_template("login.html", user_data=user_data)
+
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    # Clear session data
+    session.clear()
+    flash("You have been logged out successfully.")
+    return redirect(url_for("signup"))
 
 
 if __name__ == "__main__":
